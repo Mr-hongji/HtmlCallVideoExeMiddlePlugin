@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   showStatusBar="false" width="1" height="1" backgroundAlpha="0"
+					   creationComplete="windowedapplication1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			
+			import mx.events.FlexEvent;
+			
+			private var videoPath:String;
+			
+			protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void
+			{
+//				startProcess();
+				//writeFile("http://127.0.0.1/14.尚硅谷_MongoDB入门_sort和投影ss.mp4");
+				if(NativeProcess.isSupported)
+				{
+					NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvokeEvent); 
+				}
+			}
+			
+			private function onInvokeEvent(invocation:InvokeEvent):void   
+			{   
+				var arguments:Array;   
+				
+				var videoName:String = "";
+				
+				arguments = invocation.arguments;   
+				var separate:String = "videoplayer://";
+				var param:String = decodeURI(arguments.toString());
+				
+				if(param)
+				{
+					var i:int = param.indexOf(separate);
+					if(i > -1)
+					{
+						videoPath = param.substring(i + separate.length, param.length);
+					}
+					else
+					{
+						videoPath = param;
+					}
+				}
+				
+				
+				videoPath = decodeURI(videoPath);
+				
+				videoPath = videoPath.replace(/\s/ig, '\" \"');
+				
+				writeFile(videoPath);
+				
+				startProcess();
+				
+				nativeWindow.close();
+			} 
+			
+			private function writeFile(videoPath:String):void
+			{
+				var appFile:File = File.applicationDirectory;
+				
+				var exePath = appFile.nativePath + "/KMPlayer.exe";
+				var exeFile:File = appFile.resolvePath(appFile.resolvePath(exePath).nativePath);
+				
+				var batFile:File = appFile.resolvePath(appFile.resolvePath(appFile.nativePath + "/middlePlugin.bat").nativePath);
+				var fileStream:FileStream = new FileStream();
+				
+				fileStream.open(batFile, FileMode.WRITE);				
+				fileStream.writeMultiByte(exeFile.nativePath + " " + videoPath, "gbk");
+				
+				fileStream.close();
+				fileStream = null;
+			}
+			
+			
+			private function startProcess():void
+			{
+				var appFile:File = File.applicationDirectory;
+				var exePath:String = "C:/Windows/system32/cmd.exe";
+				var cmdExe:File = new File(exePath);
+				
+				var shellPath = appFile.nativePath + "/middlePlugin.vbs";
+				var shellFile:File = appFile.resolvePath(appFile.resolvePath(shellPath).nativePath);
+				shellPath = shellFile.nativePath;
+				
+				var info:NativeProcessStartupInfo = new NativeProcessStartupInfo();//启动参数
+				
+				if(cmdExe && cmdExe.exists)
+				{
+					info.executable = cmdExe;
+					var processArg:Vector.<String> = new Vector.<String>();
+					processArg[0] = "/c";//加上/c，是cmd的参数
+					processArg[1] = shellPath;//shellPath是你的bat的路径，建议用绝对路径，如果是相对的，可以用File转一下
+					info.arguments= processArg;
+					var process:NativeProcess = new NativeProcess();
+					process.start(info);
+				}
+				
+			}
+			
+		]]>
+	</fx:Script>
+	
+</s:WindowedApplication>
