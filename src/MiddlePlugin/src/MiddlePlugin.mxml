@@ -6,15 +6,16 @@
 					   creationComplete="windowedapplication1_creationCompleteHandler(event)">
 	<fx:Script>
 		<![CDATA[
-			
 			import mx.events.FlexEvent;
+			import mx.utils.StringUtil;
 			
 			private var videoPath:String;
 			
 			protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void
 			{
 //				startProcess();
-				//writeFile("http://127.0.0.1/14.尚硅谷_MongoDB入门_sort和投影ss.mp4");
+				//writeFile("D:\\视频\\Linux\\01 大数据和人工智能介绍\\1-1 大数据和人工智能介绍.avi");
+				//onInvokeEvent(null);
 				if(NativeProcess.isSupported)
 				{
 					NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvokeEvent); 
@@ -28,8 +29,19 @@
 				var videoName:String = "";
 				
 				arguments = invocation.arguments;   
+				
+				if(!arguments || arguments.length == 0)
+					return;
+				
 				var separate:String = "videoplayer://";
 				var param:String = decodeURI(arguments.toString());
+				
+				param =  StringUtil.trim(param);
+				
+				if(param.substr(param.length - 1, 1) == '/')
+				{
+					param = param.substring(0, param.length - 1);
+				}
 				
 				if(param)
 				{
@@ -44,8 +56,12 @@
 					}
 				}
 				
-				
 				videoPath = decodeURI(videoPath);
+				
+				if(videoPath == StringUtil.trim(videoPath))
+				{
+					videoPath = StringUtil.trim(videoPath);
+				}
 				
 				videoPath = videoPath.replace(/\s/ig, '\" \"');
 				
@@ -68,7 +84,6 @@
 				
 				fileStream.open(batFile, FileMode.WRITE);				
 				fileStream.writeMultiByte(exeFile.nativePath + " " + videoPath, "gbk");
-				
 				fileStream.close();
 				fileStream = null;
 			}
