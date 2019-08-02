@@ -63,9 +63,9 @@
 					videoPath = StringUtil.trim(videoPath);
 				}
 				
-				videoPath = videoPath.replace(/\s/ig, '\" \"');
+				//videoPath = videoPath.replace(/\s/ig, '\" \"');
 				
-				writeFile(videoPath);
+				writeFile("\"" + videoPath + "\"");
 				
 				startProcess();
 				
@@ -76,7 +76,7 @@
 			{
 				var appFile:File = File.applicationDirectory;
 				
-				var exePath = appFile.nativePath + "/KMPlayer.exe";
+				var exePath = appFile.nativePath + "/Player/Player.exe";
 				var exeFile:File = appFile.resolvePath(appFile.resolvePath(exePath).nativePath);
 				
 				var batFile:File = appFile.resolvePath(appFile.resolvePath(appFile.nativePath + "/middlePlugin.bat").nativePath);
