@@ -1,0 +1,1 @@
+Player\Player.exe F:\视频\Python\Django\第06部分-Python之Django框架零基础到高级(49-62)\day50-Django视图与模板\01-python-全栈三期-day50django之视图函数的介绍.mp4

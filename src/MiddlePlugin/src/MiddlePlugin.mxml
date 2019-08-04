@@ -14,7 +14,8 @@
 			protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void
 			{
 //				startProcess();
-				//writeFile("D:\\视频\\Linux\\01 大数据和人工智能介绍\\1-1 大数据和人工智能介绍.avi");
+				//writeFile("F:\\视频\\Python\\Django\\第06部分-Python之Django框架零基础到高级(49-62)\\day50-Django视图与模板\\01-python-全栈三期-day50django之视图函数的介绍.mp4", fileExtName("F:\\视频\\Python\\Django\\第06部分-Python之Django框架零基础到高级(49-62)\\day50-Django视图与模板\\01-python-全栈三期-day50django之视图函数的介绍.mp4"));
+				//writeFile("D:\\第八天二.wrf", fileExtName("D:\\第八天二.wrf"));
 				//onInvokeEvent(null);
 				if(NativeProcess.isSupported)
 				{
@@ -65,29 +66,53 @@
 				
 				//videoPath = videoPath.replace(/\s/ig, '\" \"');
 				
-				writeFile("\"" + videoPath + "\"");
+				writeFile("\"" + videoPath + "\"", fileExtName(videoPath));
 				
 				startProcess();
 				
 				nativeWindow.close();
 			} 
 			
-			private function writeFile(videoPath:String):void
+			private function writeFile(videoPath:String, isWrfFile:Boolean):void
 			{
 				var appFile:File = File.applicationDirectory;
 				
 				var exePath = appFile.nativePath + "/Player/Player.exe";
+				
+				if(isWrfFile)
+					exePath = appFile.nativePath + "/WebEx/AtAuthor.exe";
+				
 				var exeFile:File = appFile.resolvePath(appFile.resolvePath(exePath).nativePath);
 				
 				var batFile:File = appFile.resolvePath(appFile.resolvePath(appFile.nativePath + "/middlePlugin.bat").nativePath);
 				var fileStream:FileStream = new FileStream();
 				
-				fileStream.open(batFile, FileMode.WRITE);				
-				fileStream.writeMultiByte(exeFile.nativePath + " " + videoPath, "gbk");
+				fileStream.open(batFile, FileMode.WRITE);
+				
+				if(isWrfFile)
+				{
+					fileStream.writeMultiByte("\""+ exeFile.nativePath + "\" -PLAYER" + " " + videoPath, "gbk");
+				}
+				else
+				{
+					fileStream.writeMultiByte("\"" + exeFile.nativePath + "\" " + videoPath, "gbk");
+				}
+				
 				fileStream.close();
 				fileStream = null;
 			}
 			
+			private function fileExtName(fpath:String):Boolean
+			{
+				var isWrfFile:Boolean = false;
+				
+				var ps:Array = fpath.split(".");
+				if(ps && ps[ps.length - 1] == 'wrf')
+					isWrfFile = true;
+				
+				return isWrfFile;
+				
+			}
 			
 			private function startProcess():void
 			{
