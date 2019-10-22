@@ -6,6 +6,8 @@
 					   creationComplete="windowedapplication1_creationCompleteHandler(event)">
 	<fx:Script>
 		<![CDATA[
+			import com.ntalker.common.utils.MyUtil;
+			
 			import mx.events.FlexEvent;
 			import mx.utils.StringUtil;
 			
@@ -138,6 +140,7 @@
 				}
 				
 			}
+			
 			
 		]]>
 	</fx:Script>
