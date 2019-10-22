@@ -1,1 +1,1 @@
-D:\MiddlePlugin\KMPlayer.exe http://127.0.0.1/14.尚硅谷_MongoDB入门_sort和投影" "ss.avi
+"E:\MyGitHubProject\HtmlCallVideoExeMiddlePlugin\MiddlePlugin\Player\Player.exe" "http://perblog.natapp1.cc/video/java/jsp/尚学堂SERVLETJSP视频第1-28讲/AVI/[浪曦][尚学堂]SERVLET_JSP视频 第1讲 SERVLET简介.avi"
